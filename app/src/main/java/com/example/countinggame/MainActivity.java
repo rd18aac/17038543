@@ -6,6 +6,7 @@ import android.os.Bundle;
 import android.view.MotionEvent;
 import android.view.View;
 import android.widget.ImageView;
+import android.widget.Toast;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -56,4 +57,38 @@ public class MainActivity extends AppCompatActivity {
             return true;
         }
     };
+
+    // Check button clicked was the right answer
+    public void checkAnswer(View v) {
+        if (v.getId() == R.id.button0) {
+            Toast.makeText(this, "NOPE", Toast.LENGTH_SHORT).show();
+        }
+        else if (v.getId() == R.id.button1) {
+            Toast.makeText(this, "NOPE", Toast.LENGTH_SHORT).show();
+        }
+        else if (v.getId() == R.id.button2) {
+            Toast.makeText(this, "NOPE", Toast.LENGTH_SHORT).show();
+        }
+        else if (v.getId() == R.id.button3) {
+            Toast.makeText(this, "NOPE", Toast.LENGTH_SHORT).show();
+        }
+        else if (v.getId() == R.id.button4) {
+            Toast.makeText(this, "NOPE", Toast.LENGTH_SHORT).show();
+        }
+        else if (v.getId() == R.id.button5) {
+            Toast.makeText(this, "CORRECT!!!!!", Toast.LENGTH_SHORT).show(); // Correct answer = 5
+        }
+        else if (v.getId() == R.id.button6) {
+            Toast.makeText(this, "NOPE", Toast.LENGTH_SHORT).show();
+        }
+        else if (v.getId() == R.id.button7) {
+            Toast.makeText(this, "NOPE", Toast.LENGTH_SHORT).show();
+        }
+        else if (v.getId() == R.id.button8) {
+            Toast.makeText(this, "NOPE", Toast.LENGTH_SHORT).show();
+        }
+        else if (v.getId() == R.id.button9) {
+            Toast.makeText(this, "NOPE", Toast.LENGTH_SHORT).show();
+        }
+    }
 }
