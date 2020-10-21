@@ -8,27 +8,68 @@ import android.view.MotionEvent;
 import android.view.View;
 import android.view.animation.AlphaAnimation;
 import android.view.animation.Animation;
+import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.TextView;
-import android.widget.Toast;
+
+import java.util.Random;
 
 public class MainActivity extends AppCompatActivity {
+
+    // Declare variable for the Java random class
+    Random rand = new Random();
+
+    // Declare variables for the math question values and answer
+    int valueA, valueB, answer;
+
+    // Declare variable for math question text element
+    TextView question;
+
+    // Declare variables for apple, plate and star image elements
+    ImageView apple1, apple2, apple3, apple4, apple5, apple6, apple7, apple8, apple9, plate, star1, star2, star3, star4;
+
+    // Declare variables for number and "play again" button elements
+    ImageButton button0, button1, button2, button3, button4, button5, button6, button7, button8, button9, againButton;
+
+    // Declare variable for background element
+    View background;
+
+    // Declare variables for animations
+    AlphaAnimation anim1, anim2, anim3, anim4;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        // Get apple image elements
-        ImageView apple1 = (ImageView) findViewById(R.id.apple1);
-        ImageView apple2 = (ImageView) findViewById(R.id.apple2);
-        ImageView apple3 = (ImageView) findViewById(R.id.apple3);
-        ImageView apple4 = (ImageView) findViewById(R.id.apple4);
-        ImageView apple5 = (ImageView) findViewById(R.id.apple5);
-        ImageView apple6 = (ImageView) findViewById(R.id.apple6);
-        ImageView apple7 = (ImageView) findViewById(R.id.apple7);
-        ImageView apple8 = (ImageView) findViewById(R.id.apple8);
-        ImageView apple9 = (ImageView) findViewById(R.id.apple9);
+        // Initiate number buttons, question text, background, apple, plate, star images and "play again" button
+        button0 = findViewById(R.id.button0);
+        button1 = findViewById(R.id.button1);
+        button2 = findViewById(R.id.button2);
+        button3 = findViewById(R.id.button3);
+        button4 = findViewById(R.id.button4);
+        button5 = findViewById(R.id.button5);
+        button6 = findViewById(R.id.button6);
+        button7 = findViewById(R.id.button7);
+        button8 = findViewById(R.id.button8);
+        button9 = findViewById(R.id.button9);
+        question = findViewById(R.id.question);
+        background = findViewById(R.id.background);
+        apple1 = findViewById(R.id.apple1);
+        apple2 = findViewById(R.id.apple2);
+        apple3 = findViewById(R.id.apple3);
+        apple4 = findViewById(R.id.apple4);
+        apple5 = findViewById(R.id.apple5);
+        apple6 = findViewById(R.id.apple6);
+        apple7 = findViewById(R.id.apple7);
+        apple8 = findViewById(R.id.apple8);
+        apple9 = findViewById(R.id.apple9);
+        plate = findViewById(R.id.plate);
+        star1 = findViewById(R.id.star1);
+        star2 = findViewById(R.id.star2);
+        star3 = findViewById(R.id.star3);
+        star4 = findViewById(R.id.star4);
+        againButton = findViewById(R.id.againButton);
 
         // Tell apple images to listen for touch event
         apple1.setOnTouchListener(handleTouch);
@@ -40,6 +81,8 @@ public class MainActivity extends AppCompatActivity {
         apple7.setOnTouchListener(handleTouch);
         apple8.setOnTouchListener(handleTouch);
         apple9.setOnTouchListener(handleTouch);
+
+        generateQuestion(null);
     }
 
     // Touch event function
@@ -62,83 +105,137 @@ public class MainActivity extends AppCompatActivity {
         }
     };
 
+    // Generate question function, called when app loads and when "play again" button is clicked
+    public void generateQuestion(View v) {
+        // Generate 2 values, each in range 0 - 4 so sum doesn't exceed 9 and work out answer
+        valueA = rand.nextInt(5);
+        valueB = rand.nextInt(5);
+        answer = valueA + valueB;
+
+        // Set question text to display math question and change colour to dark grey
+        question.setText(String.valueOf(valueA) + " + " + String.valueOf(valueB) + " = ?");
+        question.setTextColor(Color.parseColor("#5e5e5e"));
+
+        // Stop star animations
+        star1.clearAnimation();
+        star2.clearAnimation();
+        star3.clearAnimation();
+        star4.clearAnimation();
+
+        // Make "play again" button and star images invisible
+        againButton.setVisibility(View.INVISIBLE);
+        star1.setVisibility(View.INVISIBLE);
+        star2.setVisibility(View.INVISIBLE);
+        star3.setVisibility(View.INVISIBLE);
+        star4.setVisibility(View.INVISIBLE);
+
+        // Make number buttons, background, apple and plate elements visible
+        button0.setVisibility(View.VISIBLE);
+        button1.setVisibility(View.VISIBLE);
+        button2.setVisibility(View.VISIBLE);
+        button3.setVisibility(View.VISIBLE);
+        button4.setVisibility(View.VISIBLE);
+        button5.setVisibility(View.VISIBLE);
+        button6.setVisibility(View.VISIBLE);
+        button7.setVisibility(View.VISIBLE);
+        button8.setVisibility(View.VISIBLE);
+        button9.setVisibility(View.VISIBLE);
+        background.setVisibility(View.VISIBLE);
+        apple1.setVisibility(View.VISIBLE);
+        apple2.setVisibility(View.VISIBLE);
+        apple3.setVisibility(View.VISIBLE);
+        apple4.setVisibility(View.VISIBLE);
+        apple5.setVisibility(View.VISIBLE);
+        apple6.setVisibility(View.VISIBLE);
+        apple7.setVisibility(View.VISIBLE);
+        apple8.setVisibility(View.VISIBLE);
+        apple9.setVisibility(View.VISIBLE);
+        plate.setVisibility(View.VISIBLE);
+    }
+
     // Check button clicked was the right answer
     public void checkAnswer(View v) {
-        if (v.getId() == R.id.button0) {
-            Toast.makeText(this, "NOPE", Toast.LENGTH_SHORT).show();
-        }
-        else if (v.getId() == R.id.button1) {
-            Toast.makeText(this, "NOPE", Toast.LENGTH_SHORT).show();
+        // Declare button number variable to be used for comparison (has to be initialised so will just use 0 to begin with)
+        int button = 0;
+
+        if (v.getId() == R.id.button1) {
+            button = 1;
         }
         else if (v.getId() == R.id.button2) {
-            Toast.makeText(this, "NOPE", Toast.LENGTH_SHORT).show();
+            button = 2;
         }
         else if (v.getId() == R.id.button3) {
-            Toast.makeText(this, "NOPE", Toast.LENGTH_SHORT).show();
+            button = 3;
         }
         else if (v.getId() == R.id.button4) {
-            Toast.makeText(this, "NOPE", Toast.LENGTH_SHORT).show();
+            button = 4;
         }
         else if (v.getId() == R.id.button5) {
-            // Get question text element
-            TextView question = findViewById(R.id.question);
+            button = 5;
+        }
+        else if (v.getId() == R.id.button6) {
+            button = 6;
+        }
+        else if (v.getId() == R.id.button7) {
+            button = 7;
+        }
+        else if (v.getId() == R.id.button8) {
+            button = 8;
+        }
+        else if (v.getId() == R.id.button9) {
+            button = 9;
+        }
 
+        if (button == answer)
+        {
             // Set question text to display correct answer and change it to green
-            question.setText("3 + 2 = 5");
+            question.setText(String.valueOf(valueA) + " + " + String.valueOf(valueB) + " = " + String.valueOf(answer));
             question.setTextColor(Color.parseColor("#52b465"));
 
-            // Make number buttons, grey background, plate and apple images invisible
-            findViewById(R.id.button0).setVisibility(View.INVISIBLE);
-            findViewById(R.id.button1).setVisibility(View.INVISIBLE);
-            findViewById(R.id.button2).setVisibility(View.INVISIBLE);
-            findViewById(R.id.button3).setVisibility(View.INVISIBLE);
-            findViewById(R.id.button4).setVisibility(View.INVISIBLE);
-            findViewById(R.id.button5).setVisibility(View.INVISIBLE);
-            findViewById(R.id.button6).setVisibility(View.INVISIBLE);
-            findViewById(R.id.button7).setVisibility(View.INVISIBLE);
-            findViewById(R.id.button8).setVisibility(View.INVISIBLE);
-            findViewById(R.id.button9).setVisibility(View.INVISIBLE);
-            findViewById(R.id.background).setVisibility(View.INVISIBLE);
-            findViewById(R.id.plate).setVisibility(View.INVISIBLE);
-            findViewById(R.id.apple1).setVisibility(View.INVISIBLE);
-            findViewById(R.id.apple2).setVisibility(View.INVISIBLE);
-            findViewById(R.id.apple3).setVisibility(View.INVISIBLE);
-            findViewById(R.id.apple4).setVisibility(View.INVISIBLE);
-            findViewById(R.id.apple5).setVisibility(View.INVISIBLE);
-            findViewById(R.id.apple6).setVisibility(View.INVISIBLE);
-            findViewById(R.id.apple7).setVisibility(View.INVISIBLE);
-            findViewById(R.id.apple8).setVisibility(View.INVISIBLE);
-            findViewById(R.id.apple9).setVisibility(View.INVISIBLE);
+            // Make number buttons, background, apple and plate elements invisible
+            button0.setVisibility(View.INVISIBLE);
+            button1.setVisibility(View.INVISIBLE);
+            button2.setVisibility(View.INVISIBLE);
+            button3.setVisibility(View.INVISIBLE);
+            button4.setVisibility(View.INVISIBLE);
+            button5.setVisibility(View.INVISIBLE);
+            button6.setVisibility(View.INVISIBLE);
+            button7.setVisibility(View.INVISIBLE);
+            button8.setVisibility(View.INVISIBLE);
+            button9.setVisibility(View.INVISIBLE);
+            background.setVisibility(View.INVISIBLE);
+            apple1.setVisibility(View.INVISIBLE);
+            apple2.setVisibility(View.INVISIBLE);
+            apple3.setVisibility(View.INVISIBLE);
+            apple4.setVisibility(View.INVISIBLE);
+            apple5.setVisibility(View.INVISIBLE);
+            apple6.setVisibility(View.INVISIBLE);
+            apple7.setVisibility(View.INVISIBLE);
+            apple8.setVisibility(View.INVISIBLE);
+            apple9.setVisibility(View.INVISIBLE);
+            plate.setVisibility(View.INVISIBLE);
 
-            // Make "play again" button visible
-            findViewById(R.id.againButton).setVisibility(View.VISIBLE);
-
-            // Get star image elements
-            ImageView star1 = (ImageView)findViewById(R.id.star1);
-            ImageView star2 = (ImageView)findViewById(R.id.star2);
-            ImageView star3 = (ImageView)findViewById(R.id.star3);
-            ImageView star4 = (ImageView)findViewById(R.id.star4);
-
-            // Make star images visible
+            // Make "play again" button and star images visible
+            againButton.setVisibility(View.VISIBLE);
             star1.setVisibility(View.VISIBLE);
             star2.setVisibility(View.VISIBLE);
             star3.setVisibility(View.VISIBLE);
             star4.setVisibility(View.VISIBLE);
 
             // Define animations
-            AlphaAnimation anim1 = new AlphaAnimation(0, 1);
+            anim1 = new AlphaAnimation(0, 1);
             anim1.setDuration(2000);
             anim1.setRepeatCount(Animation.INFINITE);
 
-            AlphaAnimation anim2 = new AlphaAnimation(0, 1);
+            anim2 = new AlphaAnimation(0, 1);
             anim2.setDuration(2500);
             anim2.setRepeatCount(Animation.INFINITE);
 
-            AlphaAnimation anim3 = new AlphaAnimation(0, 1);
+            anim3 = new AlphaAnimation(0, 1);
             anim3.setDuration(1500);
             anim3.setRepeatCount(Animation.INFINITE);
 
-            AlphaAnimation anim4 = new AlphaAnimation(0, 1);
+            anim4 = new AlphaAnimation(0, 1);
             anim4.setDuration(2500);
             anim4.setRepeatCount(Animation.INFINITE);
             anim4.setStartOffset(1500); // Animation 4 gets set off after animation 3 has loaded
@@ -149,17 +246,10 @@ public class MainActivity extends AppCompatActivity {
             star3.startAnimation(anim3);
             star4.startAnimation(anim4);
         }
-        else if (v.getId() == R.id.button6) {
-            Toast.makeText(this, "NOPE", Toast.LENGTH_SHORT).show();
-        }
-        else if (v.getId() == R.id.button7) {
-            Toast.makeText(this, "NOPE", Toast.LENGTH_SHORT).show();
-        }
-        else if (v.getId() == R.id.button8) {
-            Toast.makeText(this, "NOPE", Toast.LENGTH_SHORT).show();
-        }
-        else if (v.getId() == R.id.button9) {
-            Toast.makeText(this, "NOPE", Toast.LENGTH_SHORT).show();
+        else
+        {
+            // Set question text colour to red, indicating wrong answer
+            question.setTextColor(Color.parseColor("#8b0000"));
         }
     }
 }
