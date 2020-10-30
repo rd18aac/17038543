@@ -1,9 +1,11 @@
 package com.example.countinggame;
 
 import androidx.appcompat.app.AppCompatActivity;
-
+import android.content.Context;
 import android.graphics.Color;
+import android.media.MediaPlayer;
 import android.os.Bundle;
+import android.os.Vibrator;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.animation.AlphaAnimation;
@@ -11,8 +13,8 @@ import android.view.animation.Animation;
 import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.TextView;
-
 import java.util.Random;
+import java.util.concurrent.TimeUnit;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -25,8 +27,8 @@ public class MainActivity extends AppCompatActivity {
     // Declare variable for math question text element
     TextView question;
 
-    // Declare variables for apple, plate and star image elements
-    ImageView apple1, apple2, apple3, apple4, apple5, apple6, apple7, apple8, apple9, plate, star1, star2, star3, star4;
+    // Declare variables for apple, plate, thumbs up and star image elements
+    ImageView apple1, apple2, apple3, apple4, apple5, apple6, apple7, apple8, apple9, plate, thumbsUp, star1, star2, star3, star4;
 
     // Declare variables for number and "play again" button elements
     ImageButton button0, button1, button2, button3, button4, button5, button6, button7, button8, button9, againButton;
@@ -37,12 +39,18 @@ public class MainActivity extends AppCompatActivity {
     // Declare variables for animations
     AlphaAnimation anim1, anim2, anim3, anim4;
 
+    // Declare variable for sound effect player
+    MediaPlayer sound;
+
+    // Declare variable for vibrator
+    Vibrator vibrator;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        // Initiate number buttons, question text, background, apple, plate, star images and "play again" button
+        // Initiate number buttons, question text, background, apple, plate, thumbs up, star images and "play again" button
         button0 = findViewById(R.id.button0);
         button1 = findViewById(R.id.button1);
         button2 = findViewById(R.id.button2);
@@ -65,6 +73,7 @@ public class MainActivity extends AppCompatActivity {
         apple8 = findViewById(R.id.apple8);
         apple9 = findViewById(R.id.apple9);
         plate = findViewById(R.id.plate);
+        thumbsUp = findViewById(R.id.thumbsUp);
         star1 = findViewById(R.id.star1);
         star2 = findViewById(R.id.star2);
         star3 = findViewById(R.id.star3);
@@ -122,8 +131,9 @@ public class MainActivity extends AppCompatActivity {
         star3.clearAnimation();
         star4.clearAnimation();
 
-        // Make "play again" button and star images invisible
+        // Make "play again" button, thumbs up and star images invisible
         againButton.setVisibility(View.INVISIBLE);
+        thumbsUp.setVisibility(View.INVISIBLE);
         star1.setVisibility(View.INVISIBLE);
         star2.setVisibility(View.INVISIBLE);
         star3.setVisibility(View.INVISIBLE);
@@ -151,10 +161,16 @@ public class MainActivity extends AppCompatActivity {
         apple8.setVisibility(View.VISIBLE);
         apple9.setVisibility(View.VISIBLE);
         plate.setVisibility(View.VISIBLE);
+
+        // If sound effect is playing, stop it
+        if (sound != null)
+        {
+            sound.stop();
+        }
     }
 
     // Check button clicked was the right answer
-    public void checkAnswer(View v) {
+    public void checkAnswer(View v) throws InterruptedException {
         // Declare button number variable to be used for comparison (has to be initialised so will just use 0 to begin with)
         int button = 0;
 
@@ -215,8 +231,9 @@ public class MainActivity extends AppCompatActivity {
             apple9.setVisibility(View.INVISIBLE);
             plate.setVisibility(View.INVISIBLE);
 
-            // Make "play again" button and star images visible
+            // Make "play again" button, thumbs up and star images visible
             againButton.setVisibility(View.VISIBLE);
+            thumbsUp.setVisibility(View.VISIBLE);
             star1.setVisibility(View.VISIBLE);
             star2.setVisibility(View.VISIBLE);
             star3.setVisibility(View.VISIBLE);
@@ -245,11 +262,23 @@ public class MainActivity extends AppCompatActivity {
             star2.startAnimation(anim2);
             star3.startAnimation(anim3);
             star4.startAnimation(anim4);
+
+            // Set sound effect player to play applause sound and play it
+            sound = MediaPlayer.create(MainActivity.this, R.raw.applause);
+            sound.start();
         }
         else
         {
             // Set question text colour to red, indicating wrong answer
             question.setTextColor(Color.parseColor("#8b0000"));
+
+            // Set sound effect player to play buzzer sound and play it
+            sound = MediaPlayer.create(MainActivity.this, R.raw.buzzer);
+            sound.start();
+
+            // Set vibrator to use vibrator system service and vibrate for 500ms
+            vibrator = (Vibrator) getSystemService(Context.VIBRATOR_SERVICE);
+            vibrator.vibrate(500);
         }
     }
 }
