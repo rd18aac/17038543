@@ -14,7 +14,6 @@ import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.TextView;
 import java.util.Random;
-import java.util.concurrent.TimeUnit;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -116,9 +115,12 @@ public class MainActivity extends AppCompatActivity {
 
     // Generate question function, called when app loads and when "play again" button is clicked
     public void generateQuestion(View v) {
-        // Generate 2 values, each in range 0 - 4 so sum doesn't exceed 9 and work out answer
-        valueA = rand.nextInt(5);
-        valueB = rand.nextInt(5);
+        // Generate 2 values, each in range 0 - 5 while the sum doesn't exceed 9 and work out answer
+        do {
+            valueA = rand.nextInt(6);
+            valueB = rand.nextInt(6);
+        }
+        while(valueA + valueB == 10);
         answer = valueA + valueB;
 
         // Set question text to display math question and change colour to dark grey
